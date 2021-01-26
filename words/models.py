@@ -2,7 +2,7 @@ from django.db import models
 
 class Word(models.Model):
     word = models.CharField(max_length=30)
-    definition = models.TextField
+    definition = models.CharField(max_length=100)
     origins = models.CharField(max_length=30)
     context = models.TextField
     word_type = models.CharField(max_length=10)
