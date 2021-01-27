@@ -1,20 +1,13 @@
-{% load static from static %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Words</title>
-        <link rel="stylesheet" href="{% static 'styling.css' %}">
-    </head>
-    <body>
-        <h1>Word List</h1>
-        <div class="words">
-            {% for word in words %}
-                <div class="word">
-                    <h2><a href="#">{{ word.word }}</a></h2>
-                    <p>{{ word.snippet }}</p>
-                </div>
-            {% endfor %}
-        </div>
-    </body>
-</html>
+{% extends 'base_layout.html' %}
+{% block content %}
+    <h1>Word List</h1>
+    <div class="words">
+        {% for word in words %}
+            <div class="word">
+                <h2><a href="#">{{ word.word }}</a></h2>
+                <p>{{ word.snippet }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+    
