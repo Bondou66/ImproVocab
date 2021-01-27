@@ -4,7 +4,7 @@
     <div class="words">
         {% for word in words %}
             <div class="word">
-                <h2><a href="#">{{ word.word }}</a></h2>
+                <h2><a href="{% url 'words:detail' slug=word.slug %}">{{ word.word }}</a></h2>
                 <p>{{ word.snippet }}</p>
             </div>
         {% endfor %}

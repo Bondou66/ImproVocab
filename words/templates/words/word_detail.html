@@ -1,0 +1,12 @@
+{% extends 'base_layout.html' %}
+{% block content %}
+    <div class="word_detail">
+        <div class="word">
+            <h2>{{ word.word }}</h2>
+            <p>{{ word.definition }}</p>
+            <p>{{ word.origins }}</p>
+            <p>{{ word.context }}</p>
+            <p>{{ word.word_type }}</p>
+        </div>
+    </div>
+{% endblock %}
