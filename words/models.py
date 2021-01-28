@@ -32,4 +32,4 @@ class Learned(models.Model):
         unique_together = (("user", "word"),)
     
     def __str__(self):
-        return self.word
+        return self.word.word

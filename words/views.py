@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Word, Learned
 from django.contrib.auth.decorators import login_required
 from . import forms
+import random
 
 def word_list(request):
     words = Word.objects.all().order_by('word_type', 'word')
@@ -14,12 +15,22 @@ def word_detail(request, slug):
 @login_required(login_url="/accounts/login/")
 def learn_word(request):
     user = request.user
+    slug = request.POST.get('slug')
+    if slug != None:
+        word = Word.objects.get(slug=slug)
+    else:
+        learned_words = Learned.objects.values_list('word', flat=True).filter(user=user)
+        words = Word.objects.exclude(id__in=learned_words)
+        if not words:
+            return render(request, "words/learn_word.html")
+        word = random.choice(words)
     learned = Learned()
-    word = Word.objects.get(slug=request.POST.get('slug'))
     learned.user = user
     learned.word = word
-    learned.save()
-    return render(request, "words/learn_word.html")
+    is_learned = Learned.objects.get(user=user, word=word)
+    if not is_learned:
+        learned.save()
+    return render(request, "words/learn_word.html", {'word' : word})
 
 @login_required(login_url="/accounts/login/")
 def practice_word(request):
