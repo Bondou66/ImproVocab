@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Word
 from django.contrib.auth.decorators import login_required
+from . import forms
 
 def word_list(request):
     words = Word.objects.all().order_by('word')
@@ -12,4 +13,10 @@ def word_detail(request, slug):
 
 @login_required(login_url="/accounts/login/")
 def word_create(request):
-    return render(request, "words/word_create.html")
+    if request.method == 'POST':
+        form = forms.CreateWordForm(request.POST, request.FILES)
+        if form.is_valid():
+            return redirect('words:list')
+    else:
+        form = forms.CreateWordForm()
+    return render(request, "words/word_create.html", {'form' : form})
