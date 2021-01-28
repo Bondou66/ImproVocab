@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Word(models.Model):
     word = models.CharField(max_length=30)
@@ -17,3 +18,9 @@ class Word(models.Model):
             return self.definition[:50] + "..."
         else:
             return self.definition
+
+class Learned(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    class Meta:
+        unique_together = (("user", "word"),)

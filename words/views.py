@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Word
+from .models import Word, Learned
 from django.contrib.auth.decorators import login_required
 from . import forms
 
@@ -16,6 +16,11 @@ def word_create(request):
     if request.method == 'POST':
         form = forms.CreateWordForm(request.POST, request.FILES)
         if form.is_valid():
+            instance = form.save(commit=False)
+            learned = Learned()
+            learned.user = request.user
+            learned.word = instance
+            instance.save()
             return redirect('words:list')
     else:
         form = forms.CreateWordForm()
