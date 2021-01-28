@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from . import forms
 
 def word_list(request):
-    words = Word.objects.all().order_by('word')
+    words = Word.objects.all().order_by('word_type', 'word')
     return render(request, "words/word_list.html", {'words' : words})
 
 def word_detail(request, slug):
@@ -30,6 +30,7 @@ def word_create(request):
             learned = Learned()
             learned.user = request.user
             learned.word = instance
+            instance.word_type = instance.word_type.lower()
             instance.save()
             learned.save()
             return redirect('words:list')

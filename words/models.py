@@ -2,11 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Word(models.Model):
+    WORD_TYPE = (
+        ('academic', ('academic')),
+        ('common', ('common')),
+        ('slang', ('slang')),
+    )
+
     word = models.CharField(max_length=30)
     definition = models.TextField()
     origins = models.CharField(max_length=30)
     context = models.TextField()
-    word_type = models.CharField(max_length=10)
+    word_type = models.CharField(max_length=10, choices=WORD_TYPE, default='common')
     slug = models.SlugField()
     thumb = models.ImageField(default='default.png', blank=True)
 
@@ -26,4 +32,4 @@ class Learned(models.Model):
         unique_together = (("user", "word"),)
     
     def __str__(self):
-        return self.word.word
+        return self.word
