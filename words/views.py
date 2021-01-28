@@ -13,11 +13,18 @@ def word_detail(request, slug):
 
 @login_required(login_url="/accounts/login/")
 def learn_word(request):
+    user = request.user
+    learned = Learned()
+    word = Word.objects.get(slug=request.POST.get('slug'))
+    learned.user = user
+    learned.word = word
+    learned.save()
     return render(request, "words/learn_word.html")
 
 @login_required(login_url="/accounts/login/")
 def practice_word(request):
     user = request.user
+
     learned_words = Learned.objects.filter(user=user)
     return render(request, "words/practice_word.html", {'learned_words' : learned_words})
 
