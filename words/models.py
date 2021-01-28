@@ -6,7 +6,8 @@ class Word(models.Model):
     origins = models.CharField(max_length=30)
     context = models.TextField()
     word_type = models.CharField(max_length=10)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField()
+    thumb = models.ImageField(default='default.png', blank=True)
 
     def __str__(self):
         return self.word
