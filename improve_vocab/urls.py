@@ -10,7 +10,7 @@ urlpatterns = [
     path('words/', include('words.urls')),
     path('accounts/', include('accounts.urls')),
     path('about/', views.about),
-    path('', views.homepage),
+    path('', views.homepage, name="home"),
 
 ]
 

@@ -9,7 +9,17 @@ def word_list(request):
 
 def word_detail(request, slug):
     word = Word.objects.get(slug=slug)
-    return render(request, "words/word_detail.html", {'word' : word })
+    return render(request, "words/word_detail.html", {'word' : word})
+
+@login_required(login_url="/accounts/login/")
+def learn_word(request):
+    return render(request, "words/learn_word.html")
+
+@login_required(login_url="/accounts/login/")
+def practice_word(request):
+    user = request.user
+    learned_words = Learned.objects.filter(user=user)
+    return render(request, "words/practice_word.html", {'learned_words' : learned_words})
 
 @login_required(login_url="/accounts/login/")
 def word_create(request):
@@ -21,6 +31,7 @@ def word_create(request):
             learned.user = request.user
             learned.word = instance
             instance.save()
+            learned.save()
             return redirect('words:list')
     else:
         form = forms.CreateWordForm()
