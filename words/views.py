@@ -13,19 +13,22 @@ def word_detail(request, slug):
     return render(request, "words/word_detail.html", {'word' : word})
 
 @login_required(login_url="/accounts/login/")
-def learn_word(request, slug=None):
+def learn_word(request):
     user = request.user
+    slug = request.POST.get('slug')
     if slug != None:
-        word = Word.objects.get(slug=request.POST.get('slug'))
+        word = Word.objects.get(slug=slug)
     else:
         learned_words = Learned.objects.values_list('word', flat=True).filter(user=user)
         words = Word.objects.exclude(id__in=learned_words)
+        if not words:
+            return render(request, "words/learn_word.html")
         word = random.choice(words)
     learned = Learned()
     learned.user = user
     learned.word = word
-    is_learned = Learned.objects.filter(user=user, word=word)
-    if learned not in is_learned:
+    is_learned = Learned.objects.get(user=user, word=word)
+    if not is_learned:
         learned.save()
     return render(request, "words/learn_word.html", {'word' : word})
 
