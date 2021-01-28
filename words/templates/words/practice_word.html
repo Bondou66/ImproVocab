@@ -1,0 +1,9 @@
+{% extends 'base_layout.html' %}
+{% block content %}
+    <h1>Practice Words</h1>
+    {% for learned_word in learned_words %}
+        <div class="word">
+            <h2><a href="{% url 'words:detail' slug=learned_word.word.slug %}">{{ learned_word.word.word }}</a></h2>
+        </div>
+{% endfor %}
+{% endblock %}
